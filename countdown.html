@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Prayer Time</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f8f9fa;
+    }
+    .countdown-container {
+      text-align: center;
+    }
+    .countdown-time {
+      font-size: 6rem;
+      font-weight: bold;
+      color: #09bc8a;
+      background-color: #172a3a;
+    }
+    .prayer-name {
+      font-size: 5rem;
+      margin-bottom: 20px;
+    }
+    #qr-code-container canvas {
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="countdown-container">
+    <label style="font-size: 6rem;font-family: Georgia, 'Times New Roman', Times, serif;">WAKTU IQOMAH</label>
+    <div class="prayer-name text-uppercase" id="prayer-name">Shalat</div>
+    <div class="countdown-time border rounded shadow" id="countdown">00:00</div>
+    <div id="qr-code-container" class="mt-4"></div>
+  </div>
+  
+  <script>
+    // Durasi halaman ditampilkan (15 menit)
+    const countdownDuration = 15 * 60; // dalam detik
+    let remainingTime = countdownDuration;
+
+    // Ambil waktu sholat dari URL atau default
+    const urlParams = new URLSearchParams(window.location.search);
+    const prayerName = urlParams.get("prayer") || "Shalat";
+    document.getElementById("prayer-name").textContent = prayerName;
+
+    // Fungsi untuk memperbarui countdown
+    function updateCountdown() {
+      const minutes = String(Math.floor(remainingTime / 60)).padStart(2, '0');
+      const seconds = String(remainingTime % 60).padStart(2, '0');
+      document.getElementById("countdown").textContent = `${minutes} : ${seconds}`;
+      remainingTime--;
+
+      // Redirect ke halaman utama jika waktu habis
+      if (remainingTime < 0) {
+        window.location.href = "index.html"; // Ganti dengan halaman utama
+      }
+    }
+
+    // Jalankan countdown
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Generate QR Code
+    function generateQRCode(data) {
+      console.log("Generating QR Code for:", data);
+
+      // Dapatkan elemen target
+      const qrCodeContainer = document.getElementById("qr-code-container");
+      qrCodeContainer.innerHTML = ""; // Hapus konten sebelumnya
+
+      // Buat elemen canvas
+      const canvas = document.createElement("canvas");
+      qrCodeContainer.appendChild(canvas); // Tambahkan ke container
+
+      // Render QR Code di elemen canvas
+      QRCode.toCanvas(canvas, data, {
+        width: 250,
+        margin: 2,
+        color: {
+          dark: "#000000", // Warna QR Code
+          light: "#ffffff" // Warna latar belakang
+        }
+      }, function (error) {
+        if (error) {
+          console.error("Error generating QR code:", error);
+        } else {
+          console.log("QR Code successfully generated!");
+        }
+      });
+    }
+
+    // Data QR Code (gabungan nama sholat dan waktu saat ini)
+    const qrCodeData = `${prayerName}-${new Date().toISOString()}`;
+    generateQRCode(qrCodeData);
+  </script>
+</body>
+</html>
