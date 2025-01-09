@@ -9,55 +9,61 @@
 </head>
 <body>
   <!-- Header dengan Judul Brand -->
-  <header class="bg-dark text-white text-center py-2">
-    <div class="row g-0 text-center">
-      <div class="col-sm-6 col-md-8">
-        <h1 class="brand-title">MASJID DA'WATUL ISLAM</h1>
-        <h2 class="brand-subtitle">Ngentak Sapen, Caturtunggal, Depok, Sleman, DIY</h2>
-      </div>
-      <div class="col-6 col-md-4">
-        <!-- Jam -->
-        <label id="current-time" class="text-white fw-bold fs-1"></label><br>
-        <!-- Countdown Menuju Waktu Sholat Berikutnya -->
-        <label id="countdown" class="fw-bold text-white fs-3"></label>
-      </div>
-    </div>
+  <header class="bg-dark text-white pt-1">
+    <marquee scrollamount="5">
+      <label class="fs-5 text-uppercase">
+        &#10097; Masjid Da'watul Islam &nbsp;
+        &#10097; Desa Ngentak Sapen, Dsn. Papringan, Kel. Caturtunggal, Kec. Depok, Kab. Sleman, D.I. Yogyakarta &nbsp;
+        &#10097; WA : 081234567890
+      </label>
+    </marquee>
   </header>
 
-  <!-- Konten Utama: Carousel dan Waktu Sholat -->
-  <div id="carouselExampleAutoplaying" class="carousel slide m-3" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="img/gambar-1.jpg" class="d-block w-100" alt="Image 1">
-      </div>
-      <div class="carousel-item">
-        <img src="img/gambar-2.jpg" class="d-block w-100" alt="Image 2">
-      </div>
-      <div class="carousel-item">
-        <img src="img/gambar-3.jpg" class="d-block w-100" alt="Image 3">
+  <!-- Konten Utama: Carousel dan Waktu Sholat -->  
+  <div class="d-flex">
+    <div class="p-2 w-75">
+      <div id="carouselExampleAutoplaying" class="carousel slide m-3" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="img/gambar-1.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="600" alt="Image 1">
+          </div>
+          <div class="carousel-item">
+            <img src="img/gambar-2.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="600" alt="Image 2">
+          </div>
+          <div class="carousel-item">
+            <img src="img/gambar-3.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="600" alt="Image 3">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-
-  <div class="container py-1">
-    <div id="location" class="text-muted mb-2 text-center"></div>
-    <div class="row justify-content-center" id="prayer-times">
-      <!-- Data waktu sholat akan diisi oleh JavaScript -->
+    <div class="p-2 w-25">
+      <div class="container">
+        <div id="location" class="text-muted text-center"></div>
+        <!-- Jam -->
+        <h1 id="current-time" class="text-center fw-bold mb-2"></h1>
+        <!-- Countdown Menuju Waktu Sholat Berikutnya -->
+        <h3 id="countdown" class="text-center fw-bold mb-4"></h3>
+        <div class="row justify-content-center" id="prayer-times">
+          <!-- Data waktu sholat akan diisi oleh JavaScript -->
+        </div>
+      </div>
     </div>
   </div>
-  
 
   <!-- Footer dengan Running Text -->
-  <footer class="bg-dark text-white text-center py-3 mt-5">
-    <marquee class="text-uppercase">Waktu Sholat tersedia di aplikasi ini, semoga bermanfaat untuk semua umat Muslim.</marquee>
+  <footer class="bg-dark text-white text-center">
+    <label class="fs-5 text-uppercase p-1">
+      &#169; Pemuda Masjid Da'watul Islam &nbsp;
+      &#10097; Semoga bermanfaat untuk semua umat Muslim
+    </label>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
