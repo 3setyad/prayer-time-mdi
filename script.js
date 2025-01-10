@@ -42,10 +42,10 @@ function displayPrayerTimes() {
 
     col.innerHTML = `
       <div class="col text-center border-end border-black">
-        <h3>${prayer}</h3>
+        <h5>${prayer}</h5>
       </div>
       <div class="col text-center">
-        <h3>${time}</h3>
+        <h5>${time}</h5>
       </div>
     `;
     prayerTimesContainer.appendChild(col);
@@ -101,7 +101,7 @@ function updateCountdown() {
   const formattedSeconds = String(remainingSeconds).padStart(2, '0');
 
   // Menampilkan waktu dalam format 2 digit
-  document.getElementById("countdown").textContent = `${prayer} { ${formattedHours} : ${formattedMinutes} : ${formattedSeconds} }`;
+  document.getElementById("countdown").textContent = `${prayer} [${formattedHours}:${formattedMinutes}:${formattedSeconds}]`;
 }
 
 // Ambil data waktu sholat saat halaman pertama kali dimuat
