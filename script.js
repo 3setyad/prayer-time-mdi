@@ -101,7 +101,7 @@ function updateCountdown() {
   const formattedSeconds = String(remainingSeconds).padStart(2, '0');
 
   // Menampilkan waktu dalam format 2 digit
-  document.getElementById("countdown").textContent = `${prayer} [${formattedHours}:${formattedMinutes}:${formattedSeconds}]`;
+  document.getElementById("countdown").textContent = `( ${prayer} ) ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 
 // Ambil data waktu sholat saat halaman pertama kali dimuat
@@ -116,7 +116,7 @@ function updateTime() {
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const seconds = String(now.getSeconds()).padStart(2, '0');
-  const currentTime = `${hours}:${minutes}:${seconds}`;
+  const currentTime = `${hours}:${minutes}`;
   
   // Menampilkan waktu di elemen dengan ID current-time
   document.getElementById('current-time').textContent = currentTime;
