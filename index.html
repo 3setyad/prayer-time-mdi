@@ -24,7 +24,7 @@
             display: grid;
             grid-template-columns: 1fr 1.5fr; /* Left sidebar, right main content */
             grid-template-rows: auto auto 1fr; /* Header, main clock/countdown, prayer times */
-            gap: 2vw; /* Responsive gap */
+            gap: 1vw; /* Responsive gap */
             width: 96vw; /* Almost full width of the screen */
             height: 96vh; /* Almost full height of the screen */
             background-color: #FFFFFF; /* Pure white main container background */
@@ -40,9 +40,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 1.5vw;
+            padding-bottom: .5vw;
             border-bottom: 0.15vw solid rgba(13, 75, 46, 0.2); /* Darker green border */
-            margin-bottom: 1.5vw;
+            /* margin-bottom: 1.5vw; */
         }
 
         .date-info {
@@ -50,13 +50,13 @@
         }
 
         .gregorian-date {
-            font-size: 2.2vw;
+            font-size: 1.5vw;
             font-weight: 600;
             color: #0d4b2e; /* Dark green */
         }
 
         .hijri-date {
-            font-size: 1.8vw;
+            font-size: 1.5vw;
             font-weight: 400;
             color: #1a6e45; /* Main green */
         }
@@ -69,7 +69,7 @@
         }
 
         .mosque-logo {
-            height: 4vw; /* Responsive height */
+            height: 2.5vw; /* Responsive height */
             width: auto;
             border-radius: 50%;
             background-color: rgba(13, 75, 46, 0.1); /* Slight green tint */
@@ -78,13 +78,13 @@
 
         .mosque-name h1 {
             margin: 0;
-            font-size: 2.8vw;
+            font-size: 2vw;
             font-weight: 700;
             color: #0d4b2e; /* Dark green */
         }
 
         .mosque-location {
-            font-size: 1.6vw;
+            font-size: 1.5vw;
             color: #1a6e45; /* Main green */
         }
 
@@ -93,7 +93,7 @@
             grid-column: 1 / 2;
             display: flex;
             flex-direction: column;
-            gap: 2vw;
+            gap: 1vw;
             justify-content: flex-start; /* Align content to the top */
         }
 
@@ -102,13 +102,13 @@
         .quran-verse-box {
             background-color: #F0F0F0; /* Light gray for boxes */
             border-radius: 1.5vw;
-            padding: 2vw;
+            padding: .5vw;
             text-align: center;
             box-shadow: inset 0 0 1.5vw rgba(0, 0, 0, 0.1); /* Softer inset shadow */
         }
 
         #current-time {
-            font-size: 9vw; /* Very large for TV */
+            font-size: 6.5vw; /* Very large for TV */
             font-weight: 700;
             color: #1a6e45; /* Main green highlight color */
             letter-spacing: 0.1vw;
@@ -116,14 +116,14 @@
         }
 
         .next-prayer-name {
-            font-size: 3.5vw;
+            font-size: 2vw;
             font-weight: 600;
             color: #0d4b2e; /* Dark green */
             margin-bottom: 0.8vw;
         }
 
         #countdown {
-            font-size: 6vw;
+            font-size: 4vw;
             font-weight: 700;
             color: #0d4b2e; /* Dark green */
             letter-spacing: 0.05vw;
@@ -133,7 +133,7 @@
             font-size: 1.5vw;
             line-height: 1.5;
             color: #1a6e45; /* Main green for verse */
-            flex-grow: 1; /* Allows it to take up remaining space */
+            flex-grow: 0; /* Allows it to take up remaining space */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -156,12 +156,12 @@
             grid-column: 2 / 3;
             display: flex;
             flex-direction: column;
-            gap: 2vw;
+            /* gap: 2vw; */
         }
 
         .mosque-image-container {
             width: 100%;
-            height: 50%; /* Takes up half the height of the right column */
+            height: 1300px; /* Takes up half the height of the right column */
             background-color: #F0F0F0; /* Light gray background for image container */
             border-radius: 1.5vw;
             overflow: hidden;
@@ -176,7 +176,8 @@
         }
 
         .prayer-times-grid {
-            display: grid;
+            /* display: grid; */
+            display: ruby;
             grid-template-columns: repeat(3, 1fr); /* 3 columns for prayer times */
             gap: 1.2vw; /* Gap between prayer time boxes */
             flex-grow: 1; /* Take remaining space */
@@ -224,11 +225,11 @@
         .footer {
             grid-column: 1 / -1;
             text-align: center;
-            font-size: 1.6vw;
-            padding-top: 1.5vw;
+            font-size: 1vw;
+            padding-top: .5vw;
             border-top: 0.15vw solid rgba(13, 75, 46, 0.2);
             color: #0d4b2e; /* Dark green */
-            margin-top: 1.5vw;
+            /* margin-top: 1.5vw; */
         }
 
         /* Responsive adjustments for smaller screens (e.g., tablets or smaller TVs if scaled) */
@@ -246,7 +247,7 @@
                 text-align: center;
                 gap: 1.5vw;
                 padding-bottom: 2vw;
-                margin-bottom: 2vw;
+                /* margin-bottom: 2vw; */
             }
 
             .mosque-info {
@@ -270,16 +271,16 @@
                 text-align: center;
             }
             .gregorian-date {
-                font-size: 3vw;
+                font-size: 1.5vw;
             }
             .hijri-date {
-                font-size: 2.5vw;
+                font-size: .5vw;
             }
 
             .main-left, .main-right {
                 grid-column: 1 / -1; /* Full width */
                 flex-direction: column;
-                gap: 3vw;
+                /* gap: 3vw; */
             }
 
             #current-time {
@@ -404,8 +405,8 @@
             <div class="mosque-info">
                 <img src="https://placehold.co/100x100/1A6E45/FFFFFF?text=Logo" alt="Mosque Logo" class="mosque-logo">
                 <div class="mosque-name">
-                    <h1>MASJID AL HUSNA</h1>
-                    <div class="mosque-location">Pakuwon Mall Yogyakarta</div>
+                    <h1>MASJID DA'WATUL ISLAM</h1>
+                    <div class="mosque-location">Ngentak Sapen Yogyakarta</div>
                 </div>
             </div>
         </div>
@@ -416,7 +417,7 @@
                 <div id="current-time">00:00:00</div>
             </div>
             <div class="countdown-box">
-                <div id="next-prayer-name" class="next-prayer-name">Next Prayer: Fajr</div>
+                <div id="next-prayer-name" class="next-prayer-name">Fajr</div>
                 <div id="countdown">00:00:00</div>
             </div>
             <div class="quran-verse-box">
@@ -427,7 +428,7 @@
 
         <div class="main-right">
             <div class="mosque-image-container">
-                <img src="https://placehold.co/1200x600/1A6E45/F0F0F0?text=Mosque+in+Indonesia" alt="Mosque Image" class="mosque-image">
+                <img src="mdi.png" alt="Mosque Image" class="mosque-image">
             </div>
             <div class="prayer-times-grid">
                 <div class="prayer-time-item" id="fajr-time">
@@ -561,7 +562,7 @@
          */
         function updateCountdown(now) {
             if (Object.keys(prayerTimes).length === 0) {
-                document.getElementById('next-prayer-name').textContent = 'Loading Prayer Times...';
+                document.getElementById('next-prayer-name').textContent = 'Loading...';
                 document.getElementById('countdown').textContent = '00:00:00';
                 return;
             }
@@ -657,7 +658,7 @@
                 const minutes = Math.floor((totalSeconds % 3600) / 60);
                 const seconds = totalSeconds % 60;
 
-                document.getElementById('next-prayer-name').textContent = `Next Prayer: ${nextPrayerName}`;
+                document.getElementById('next-prayer-name').textContent = `${nextPrayerName}`;
                 document.getElementById('countdown').textContent =
                     `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             } else {
