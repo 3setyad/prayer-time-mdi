@@ -1,87 +1,678 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Waktu Sholat</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic Prayer Time Display</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F9F9F9; /* Very light gray/off-white background */
+            color: #0d4b2e; /* Dark green text for contrast on light background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr; /* Left sidebar, right main content */
+            grid-template-rows: auto auto 1fr; /* Header, main clock/countdown, prayer times */
+            gap: 2vw; /* Responsive gap */
+            width: 96vw; /* Almost full width of the screen */
+            height: 96vh; /* Almost full height of the screen */
+            background-color: #FFFFFF; /* Pure white main container background */
+            border-radius: 1.5vw; /* Rounded corners for the main container */
+            box-shadow: 0 0 3vw rgba(0, 0, 0, 0.2); /* Softer shadow */
+            padding: 2vw; /* Responsive padding */
+            box-sizing: border-box; /* Include padding in width/height */
+        }
+
+        /* Header Section */
+        .header {
+            grid-column: 1 / -1; /* Spans across both columns */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.5vw;
+            border-bottom: 0.15vw solid rgba(13, 75, 46, 0.2); /* Darker green border */
+            margin-bottom: 1.5vw;
+        }
+
+        .date-info {
+            text-align: left;
+        }
+
+        .gregorian-date {
+            font-size: 2.2vw;
+            font-weight: 600;
+            color: #0d4b2e; /* Dark green */
+        }
+
+        .hijri-date {
+            font-size: 1.8vw;
+            font-weight: 400;
+            color: #1a6e45; /* Main green */
+        }
+
+        .mosque-info {
+            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+        }
+
+        .mosque-logo {
+            height: 4vw; /* Responsive height */
+            width: auto;
+            border-radius: 50%;
+            background-color: rgba(13, 75, 46, 0.1); /* Slight green tint */
+            padding: 0.5vw;
+        }
+
+        .mosque-name h1 {
+            margin: 0;
+            font-size: 2.8vw;
+            font-weight: 700;
+            color: #0d4b2e; /* Dark green */
+        }
+
+        .mosque-location {
+            font-size: 1.6vw;
+            color: #1a6e45; /* Main green */
+        }
+
+        /* Main Content - Left Side */
+        .main-left {
+            grid-column: 1 / 2;
+            display: flex;
+            flex-direction: column;
+            gap: 2vw;
+            justify-content: flex-start; /* Align content to the top */
+        }
+
+        .current-time-box,
+        .countdown-box,
+        .quran-verse-box {
+            background-color: #F0F0F0; /* Light gray for boxes */
+            border-radius: 1.5vw;
+            padding: 2vw;
+            text-align: center;
+            box-shadow: inset 0 0 1.5vw rgba(0, 0, 0, 0.1); /* Softer inset shadow */
+        }
+
+        #current-time {
+            font-size: 9vw; /* Very large for TV */
+            font-weight: 700;
+            color: #1a6e45; /* Main green highlight color */
+            letter-spacing: 0.1vw;
+            text-shadow: 0 0 1vw rgba(26, 110, 69, 0.3); /* Green shadow */
+        }
+
+        .next-prayer-name {
+            font-size: 3.5vw;
+            font-weight: 600;
+            color: #0d4b2e; /* Dark green */
+            margin-bottom: 0.8vw;
+        }
+
+        #countdown {
+            font-size: 6vw;
+            font-weight: 700;
+            color: #0d4b2e; /* Dark green */
+            letter-spacing: 0.05vw;
+        }
+
+        .quran-verse-box {
+            font-size: 1.5vw;
+            line-height: 1.5;
+            color: #1a6e45; /* Main green for verse */
+            flex-grow: 1; /* Allows it to take up remaining space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quran-verse-box p {
+            margin-bottom: 1vw;
+            font-style: italic;
+        }
+
+        .quran-verse-box span {
+            font-size: 1.2vw;
+            font-weight: 300;
+            opacity: 0.8;
+            color: #0d4b2e; /* Dark green for reference */
+        }
+
+        /* Main Content - Right Side (Mosque Image and Prayer Times) */
+        .main-right {
+            grid-column: 2 / 3;
+            display: flex;
+            flex-direction: column;
+            gap: 2vw;
+        }
+
+        .mosque-image-container {
+            width: 100%;
+            height: 50%; /* Takes up half the height of the right column */
+            background-color: #F0F0F0; /* Light gray background for image container */
+            border-radius: 1.5vw;
+            overflow: hidden;
+            box-shadow: 0 0 2vw rgba(0, 0, 0, 0.1);
+        }
+
+        .mosque-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the container */
+            border-radius: 1.5vw;
+        }
+
+        .prayer-times-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns for prayer times */
+            gap: 1.2vw; /* Gap between prayer time boxes */
+            flex-grow: 1; /* Take remaining space */
+            padding-top: 1vw; /* Give some space from the image */
+        }
+
+        .prayer-time-item {
+            background-color: #F0F0F0; /* Light gray for items */
+            border-radius: 1.2vw;
+            padding: 1vw 0.5vw;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 1vw rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            color: #0d4b2e; /* Dark green text */
+        }
+
+        .prayer-time-item.active {
+            background-color: #1a6e45; /* Highlight active prayer with main green */
+            color: #f7fee7; /* White text on highlight */
+            transform: scale(1.05); /* Slightly enlarge active */
+            box-shadow: 0 0 2vw rgba(26, 110, 69, 0.5); /* Green glow effect */
+        }
+
+        .prayer-time-name {
+            font-size: 1.8vw;
+            font-weight: 600;
+            margin-bottom: 0.5vw;
+        }
+
+        .prayer-time-value {
+            font-size: 3.2vw;
+            font-weight: 700;
+            color: #0d4b2e; /* Dark green */
+        }
+
+        .prayer-time-item.active .prayer-time-value {
+            color: #f7fee7; /* White on highlight */
+        }
+
+        /* Footer Section */
+        .footer {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.6vw;
+            padding-top: 1.5vw;
+            border-top: 0.15vw solid rgba(13, 75, 46, 0.2);
+            color: #0d4b2e; /* Dark green */
+            margin-top: 1.5vw;
+        }
+
+        /* Responsive adjustments for smaller screens (e.g., tablets or smaller TVs if scaled) */
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr; /* Stack vertically */
+                grid-template-rows: auto auto auto auto 1fr; /* More rows */
+                height: auto; /* Auto height for vertical stacking */
+                padding: 3vw;
+                gap: 3vw;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5vw;
+                padding-bottom: 2vw;
+                margin-bottom: 2vw;
+            }
+
+            .mosque-info {
+                flex-direction: column;
+                gap: 0.5vw;
+            }
+
+            .mosque-logo {
+                height: 6vw;
+            }
+
+            .mosque-name h1 {
+                font-size: 4vw;
+            }
+
+            .mosque-location {
+                font-size: 2.5vw;
+            }
+
+            .date-info {
+                text-align: center;
+            }
+            .gregorian-date {
+                font-size: 3vw;
+            }
+            .hijri-date {
+                font-size: 2.5vw;
+            }
+
+            .main-left, .main-right {
+                grid-column: 1 / -1; /* Full width */
+                flex-direction: column;
+                gap: 3vw;
+            }
+
+            #current-time {
+                font-size: 12vw;
+            }
+
+            .next-prayer-name {
+                font-size: 5vw;
+            }
+
+            #countdown {
+                font-size: 8vw;
+            }
+
+            .quran-verse-box {
+                font-size: 2vw;
+                padding: 3vw;
+            }
+
+            .quran-verse-box span {
+                font-size: 1.8vw;
+            }
+
+            .mosque-image-container {
+                height: 40vw; /* Adjust height for smaller screens */
+            }
+
+            .prayer-times-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+                gap: 2vw;
+            }
+
+            .prayer-time-name {
+                font-size: 3vw;
+            }
+
+            .prayer-time-value {
+                font-size: 5vw;
+            }
+
+            .footer {
+                font-size: 2vw;
+                padding-top: 2vw;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 4vw;
+                gap: 4vw;
+                width: 98vw;
+                border-radius: 2vw;
+            }
+
+            .mosque-logo {
+                height: 8vw;
+            }
+            .mosque-name h1 {
+                font-size: 5vw;
+            }
+            .mosque-location {
+                font-size: 3vw;
+            }
+            .gregorian-date {
+                font-size: 4vw;
+            }
+            .hijri-date {
+                font-size: 3.5vw;
+            }
+
+            #current-time {
+                font-size: 15vw;
+            }
+
+            .next-prayer-name {
+                font-size: 6vw;
+            }
+
+            #countdown {
+                font-size: 10vw;
+            }
+
+            .quran-verse-box {
+                font-size: 2.5vw;
+                padding: 4vw;
+            }
+            .quran-verse-box span {
+                font-size: 2.2vw;
+            }
+
+            .mosque-image-container {
+                height: 50vw;
+            }
+
+            .prayer-times-grid {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+                gap: 3vw;
+            }
+
+            .prayer-time-name {
+                font-size: 4vw;
+            }
+
+            .prayer-time-value {
+                font-size: 6vw;
+            }
+
+            .footer {
+                font-size: 2.5vw;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Header dengan Judul Brand -->
-  <header class="bg-dark text-white pt-1">
-    <marquee scrollamount="5">
-      <label class="fs-5 text-uppercase">
-        &#10097; Masjid Da'watul Islam &nbsp;
-        &#10097; Desa Ngentak Sapen, Dsn. Papringan, Kel. Caturtunggal, Kec. Depok, Kab. Sleman, D.I. Yogyakarta &nbsp;
-        &#10097; WA : 081234567890
-      </label>
-    </marquee>
-  </header>
-
-  <!-- Konten Utama: Carousel dan Waktu Sholat -->  
-  <div class="d-flex">
-    <div class="p-2 w-75">
-      <div id="carouselExampleAutoplaying" class="carousel slide m-3" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="img/gambar-1.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="550" alt="Image 1">
-          </div>
-          <div class="carousel-item">
-            <img src="img/gambar-2.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="550" alt="Image 2">
-          </div>
-          <div class="carousel-item">
-            <img src="img/gambar-3.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="550" alt="Image 3">
-          </div>
-          <div class="carousel-item">
-            <img src="img/gambar-4.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="550" alt="Image 4">
-          </div>
-          <div class="carousel-item">
-            <img src="img/gambar-5.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="550" alt="Image 5">
-          </div>
-          <div class="carousel-item">
-            <img src="img/gambar-6.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="550" alt="Image 6">
-          </div>
-          <div class="carousel-item">
-            <img src="img/gambar-7.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="550" alt="Image 7">
-          </div>
-          <div class="carousel-item">
-            <img src="img/gambar-8.jpg" class="rounded mx-auto d-block w-100" style="object-fit: cover;" height="550" alt="Image 8">
-          </div>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="date-info">
+                <div id="gregorian-date" class="gregorian-date"></div>
+                <div id="hijri-date" class="hijri-date"></div>
+            </div>
+            <div class="mosque-info">
+                <img src="https://placehold.co/100x100/1A6E45/FFFFFF?text=Logo" alt="Mosque Logo" class="mosque-logo">
+                <div class="mosque-name">
+                    <h1>MASJID AL HUSNA</h1>
+                    <div class="mosque-location">Pakuwon Mall Yogyakarta</div>
+                </div>
+            </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </div>
-    <div class="p-2 w-25">
-      <div class="container">
-        <div id="location" class="text-muted text-center"></div>
-        <!-- Jam -->
-        <h2 id="current-time" class="text-center fw-bold mb-2" style="font-size: 4rem;"></h2>
-        <!-- Countdown Menuju Waktu Sholat Berikutnya -->
-        <h4 id="countdown" class="text-center fw-bold mb-4"></h4>
-        <div class="row justify-content-center" id="prayer-times">
-          <!-- Data waktu sholat akan diisi oleh JavaScript -->
+
+        <!-- Main Content Area -->
+        <div class="main-left">
+            <div class="current-time-box">
+                <div id="current-time">00:00:00</div>
+            </div>
+            <div class="countdown-box">
+                <div id="next-prayer-name" class="next-prayer-name">Next Prayer: Fajr</div>
+                <div id="countdown">00:00:00</div>
+            </div>
+            <div class="quran-verse-box">
+                <p>"Peliharalah semua salat(mu), dan (peliharalah) salat wusthaa (salat lima waktu). Berdirilah untuk Allah (dalam salatmu) dengan khusyu"</p>
+                <span>TQS. Al-Baqarah [2]: 238</span>
+            </div>
         </div>
-      </div>
+
+        <div class="main-right">
+            <div class="mosque-image-container">
+                <img src="https://placehold.co/1200x600/1A6E45/F0F0F0?text=Mosque+in+Indonesia" alt="Mosque Image" class="mosque-image">
+            </div>
+            <div class="prayer-times-grid">
+                <div class="prayer-time-item" id="fajr-time">
+                    <div class="prayer-time-name">Fajr</div>
+                    <div class="prayer-time-value">00:00</div>
+                </div>
+                <div class="prayer-time-item" id="sunrise-time">
+                    <div class="prayer-time-name">Sunrise</div>
+                    <div class="prayer-time-value">00:00</div>
+                </div>
+                <div class="prayer-time-item" id="dhuhr-time">
+                    <div class="prayer-time-name">Dhuhr</div>
+                    <div class="prayer-time-value">00:00</div>
+                </div>
+                <div class="prayer-time-item" id="asr-time">
+                    <div class="prayer-time-name">Asr</div>
+                    <div class="prayer-time-value">00:00</div>
+                </div>
+                <div class="prayer-time-item" id="maghrib-time">
+                    <div class="prayer-time-name">Maghrib</div>
+                    <div class="prayer-time-value">00:00</div>
+                </div>
+                <div class="prayer-time-item" id="isha-time">
+                    <div class="prayer-time-name">Isha</div>
+                    <div class="prayer-time-value">00:00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            HARAP HP DINON-AKTIFKAN ATAU DISETTING MODE SILENT
+        </div>
     </div>
-  </div>
 
-  <!-- Footer dengan Running Text -->
-  <footer class="bg-dark text-white text-center">
-    <label class="fs-5 text-uppercase p-1">
-      &#169; Pemuda Masjid Da'watul Islam &nbsp;
-      &#10097; Semoga bermanfaat untuk semua umat Muslim
-    </label>
-  </footer>
+    <script>
+        // JavaScript for dynamic content and API calls
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
+        let prayerTimes = {}; // Stores prayer times for the current day
+        const CITY = 'Yogyakarta';
+        const COUNTRY = 'Indonesia';
+        const METHOD = 8; // Kemenag, Indonesia calculation method
+
+        // Variables to manage redirection state
+        let redirectedForPrayer = '';
+        let lastFetchedDate = ''; // To track if we've fetched for today
+
+        /**
+         * Fetches prayer times from the AlAdhan API for the current date and location.
+         * Updates the display with the fetched times and Hijri date.
+         */
+        async function fetchPrayerTimes() {
+            try {
+                const today = new Date();
+                const day = String(today.getDate()).padStart(2, '0');
+                const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+                const year = today.getFullYear();
+                const formattedDate = `${day}-${month}-${year}`;
+
+                // Only fetch if the date has changed since the last fetch
+                if (formattedDate === lastFetchedDate && Object.keys(prayerTimes).length > 0) {
+                    console.log('Prayer times already fetched for today.');
+                    return;
+                }
+
+                const apiUrl = `https://api.aladhan.com/v1/timingsByCity/${formattedDate}?city=${CITY}&country=${COUNTRY}&method=${METHOD}`;
+
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                if (data.data && data.data.timings) {
+                    prayerTimes = data.data.timings;
+                    lastFetchedDate = formattedDate; // Store the date for which data was fetched
+
+                    // Update prayer time values in the UI
+                    document.querySelector('#fajr-time .prayer-time-value').textContent = prayerTimes.Fajr;
+                    document.querySelector('#sunrise-time .prayer-time-value').textContent = prayerTimes.Sunrise;
+                    document.querySelector('#dhuhr-time .prayer-time-value').textContent = prayerTimes.Dhuhr;
+                    document.querySelector('#asr-time .prayer-time-value').textContent = prayerTimes.Asr;
+                    document.querySelector('#maghrib-time .prayer-time-value').textContent = prayerTimes.Maghrib;
+                    document.querySelector('#isha-time .prayer-time-value').textContent = prayerTimes.Isha;
+
+                    // Update Hijri date
+                    if (data.data.date && data.data.date.hijri) {
+                        const hijri = data.data.date.hijri;
+                        const hijriDay = hijri.day;
+                        const hijriMonth = hijri.month.en; // Using English month name
+                        const hijriYear = hijri.year;
+                        document.getElementById('hijri-date').textContent = `${hijriDay} ${hijriMonth} ${hijriYear} H`;
+
+                        // Update Gregorian date
+                        const gregorian = data.data.date.gregorian;
+                        const gregorianDayName = gregorian.weekday.en; // e.g., 'Friday'
+                        const gregorianDay = gregorian.day;
+                        const gregorianMonthName = gregorian.month.en;
+                        const gregorianYear = gregorian.year;
+                        document.getElementById('gregorian-date').textContent = `${gregorianDayName}, ${gregorianDay} ${gregorianMonthName} ${gregorianYear}`;
+                    }
+                    console.log('Prayer times fetched successfully:', prayerTimes);
+                } else {
+                    console.error('API response structure is unexpected:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching prayer times:', error);
+                document.getElementById('countdown').textContent = 'Error fetching times.';
+            }
+        }
+
+        /**
+         * Updates the current dynamic time display.
+         * Also triggers the countdown and redirection logic.
+         */
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
+
+            updateCountdown(now); // Update countdown based on current time
+        }
+
+        /**
+         * Calculates and updates the countdown to the next prayer time.
+         * Highlights the currently active prayer and handles redirection to Iqamah page.
+         * @param {Date} now - The current Date object.
+         */
+        function updateCountdown(now) {
+            if (Object.keys(prayerTimes).length === 0) {
+                document.getElementById('next-prayer-name').textContent = 'Loading Prayer Times...';
+                document.getElementById('countdown').textContent = '00:00:00';
+                return;
+            }
+
+            const prayerNames = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            let nextPrayerTime = null;
+            let nextPrayerName = '';
+            let currentActivePrayerInUI = ''; // To track which prayer is currently active for display
+
+            // Clear active styles from all prayer time items
+            document.querySelectorAll('.prayer-time-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            let potentialPrayerToRedirectFor = ''; // Holds the name of a prayer if its time just started
+
+            // Find the next prayer time and the current active prayer
+            for (let i = 0; i < prayerNames.length; i++) {
+                const name = prayerNames[i];
+                const timeString = prayerTimes[name]; // e.g., "04:15"
+                if (!timeString) continue;
+
+                const [hour, minute] = timeString.split(':').map(Number);
+                const prayerDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0);
+
+                // Check if current time is exactly at or slightly after a prayer time
+                // This is the trigger for redirection
+                const timeDiffSeconds = (now.getTime() - prayerDate.getTime()) / 1000;
+                if (timeDiffSeconds >= 0 && timeDiffSeconds < 60) { // Within the first minute of prayer time
+                    potentialPrayerToRedirectFor = name;
+                }
+
+
+                if (now < prayerDate) {
+                    // This is a future prayer time
+                    if (nextPrayerTime === null || prayerDate < nextPrayerTime) {
+                        nextPrayerTime = prayerDate;
+                        nextPrayerName = name;
+                    }
+                } else {
+                    // This prayer has already passed or is currently active
+                    currentActivePrayerInUI = name; // The last prayer that passed is currently "active"
+                }
+            }
+
+            // After checking all prayers, apply 'active' class to the truly active one
+            if (currentActivePrayerInUI) {
+                document.getElementById(`${currentActivePrayerInUI.toLowerCase()}-time`).classList.add('active');
+            }
+
+
+            // Redirection Logic: Trigger only if a prayer time has just started
+            // and we haven't redirected for it today.
+            const todayString = new Date().toDateString();
+            const storedRedirectedForPrayer = sessionStorage.getItem('redirectedForPrayer');
+            const storedRedirectedForDate = sessionStorage.getItem('redirectedForDate');
+
+            // Clear redirection state if it's a new day
+            if (storedRedirectedForDate !== todayString) {
+                sessionStorage.removeItem('redirectedForPrayer');
+                sessionStorage.setItem('redirectedForDate', todayString);
+                redirectedForPrayer = ''; // Reset local variable too
+            } else {
+                redirectedForPrayer = storedRedirectedForPrayer; // Restore from session storage
+            }
+
+            // Redirect if a prayer has just started and we haven't redirected for it already
+            if (potentialPrayerToRedirectFor && potentialPrayerToRedirectFor !== redirectedForPrayer) {
+                sessionStorage.setItem('redirectedForPrayer', potentialPrayerToRedirectFor);
+                // Redirect to Iqamah page, passing the prayer name
+                window.location.href = `iqamah-countdown.html?prayer=${potentialPrayerToRedirectFor}`;
+                return; // Stop further updates on this page as we are redirecting
+            }
+
+
+            // If no future prayer for today, next prayer is Fajr of tomorrow
+            if (nextPrayerTime === null && prayerTimes.Fajr) {
+                const [fajrHour, fajrMinute] = prayerTimes.Fajr.split(':').map(Number);
+                nextPrayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, fajrHour, fajrMinute, 0);
+                nextPrayerName = 'Fajr';
+                // If all prayers passed for today, ensure Isha is marked active if no redirection occurred
+                if (!potentialPrayerToRedirectFor) {
+                    document.getElementById('isha-time').classList.add('active');
+                }
+            }
+
+            // Calculate and display countdown to next prayer
+            if (nextPrayerTime) {
+                const diffMs = nextPrayerTime - now; // Difference in milliseconds
+                const totalSeconds = Math.max(0, Math.floor(diffMs / 1000)); // Ensure non-negative
+
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                document.getElementById('next-prayer-name').textContent = `Next Prayer: ${nextPrayerName}`;
+                document.getElementById('countdown').textContent =
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            } else {
+                document.getElementById('next-prayer-name').textContent = 'Prayer times not available.';
+                document.getElementById('countdown').textContent = '00:00:00';
+            }
+        }
+
+
+        // Initialize on window load
+        window.onload = function() {
+            fetchPrayerTimes(); // Fetch prayer times once
+            setInterval(updateClock, 1000); // Update clock and countdown every second
+            updateClock(); // Initial call to display time immediately
+        };
+    </script>
 </body>
 </html>
