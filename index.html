@@ -17,7 +17,7 @@
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             color: white;
             overflow: hidden;
-            transition: all 0.5s ease;
+            transition: background-color 0.5s ease;
         }
 
         .landscape-container {
@@ -25,6 +25,7 @@
             height: 100vh;
             width: 100vw;
             padding: 20px;
+            gap: 20px;
         }
 
         .left-panel {
@@ -36,11 +37,12 @@
         }
 
         .right-panel {
-            flex: 1;
+            /* PERUBAHAN: Menyesuaikan lebar panel kanan agar pas dengan desain baru */
+            flex: 0 0 380px; 
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 30px;
+            padding: 20px;
         }
 
         .masjid-title {
@@ -67,283 +69,180 @@
             opacity: 0.8;
         }
 
-        .slideshow-container {
-            width: 100%;
-            max-height: 300px;
-            overflow: hidden;
-            border-radius: 15px;
-            margin: 20px 0;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .slide {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            display: none;
-            animation: fade 1.5s ease-in-out;
-        }
-
-        @keyframes fade {
-            from {opacity: 0.4}
-            to {opacity: 1}
-        }
-
-        .slide.active {
-            display: block;
-        }
-
-        .slide-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.5rem;
-        }
-
-        .iqamah-countdown {
-            display: none;
-            font-size: 3rem;
-            margin: 30px 0;
-            color: #FFC107;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .iqamah-notification {
-            display: none;
-            background-color: rgba(76, 175, 80, 0.8);
-            padding: 25px;
-            border-radius: 15px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 2rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
+        /* --- STYLING BARU UNTUK WAKTU SHOLAT --- */
 
         .prayer-times-container {
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            padding: 30px;
-            height: 100%;
-            /* PERUBAHAN 1: Menambahkan scrollbar jika kontennya melebihi tinggi wadah */
-            overflow-y: auto;
+            background-color: transparent; /* Latar belakang dibuat transparan */
+            padding: 0;
+            height: auto;
         }
 
         .prayer-times-title {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            text-align: center;
-            color: #4CAF50;
+            display: none; /* Judul "Waktu Sholat" disembunyikan agar sesuai desain */
         }
 
         .prayer-times {
             display: grid;
-            /* PERUBAHAN 2: Mengubah grid dari 2 kolom menjadi 1 kolom */
-            grid-template-columns: 1fr; 
-            /* PERUBAHAN 3: Menyesuaikan jarak agar terlihat bagus secara vertikal */
-            gap: 15px;
+            grid-template-columns: 1fr;
+            gap: 12px; /* Jarak antar item */
         }
 
         .prayer-time {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px; /* Sedikit mengurangi padding agar lebih pas */
-            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: #8a0f62; /* Warna Magenta */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
             transition: all 0.3s ease;
-            text-align: center;
+            position: relative; /* Dibutuhkan untuk penanda panah */
         }
-
-        .prayer-time.active {
-            background: rgba(76, 175, 80, 0.7);
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(76, 175, 80, 0.5);
+        
+        .prayer-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+            transition: fill 0.3s ease;
         }
 
         .prayer-name {
-            font-size: 1.8rem; /* Menyesuaikan ukuran font */
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-size: 1.5rem;
+            font-weight: 500;
         }
 
         .prayer-hour {
-            font-size: 2.2rem; /* Menyesuaikan ukuran font */
-            margin-bottom: 4px;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-left: auto; /* Mendorong waktu ke ujung kanan */
         }
 
-        .iqamah-label {
-            font-size: 1.3rem; /* Menyesuaikan ukuran font */
-            opacity: 0.8;
+        /* Gaya untuk Waktu Sholat yang Sedang Aktif */
+        .prayer-time.active {
+            background-color: #3b092a; /* Warna magenta lebih gelap */
+            color: #ffd700; /* Warna Emas/Kuning */
+            transform: translateX(-20px); /* Efek menonjol ke kiri */
         }
 
-        .theme-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            z-index: 100;
+        .prayer-time.active .prayer-icon svg {
+            fill: #ffd700; /* Mengubah warna ikon menjadi emas */
         }
 
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
+        /* Membuat panah di sebelah kiri item aktif */
+        .prayer-time.active::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 15px solid #3b092a; /* Warna sama dengan background aktif */
         }
 
-        body.light-theme {
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-            color: #333;
-        }
 
-        body.light-theme .prayer-times-container {
-            background-color: rgba(255, 255, 255, 0.7);
-            color: #333;
-        }
-
-        body.light-theme .prayer-time {
-            background: rgba(0, 0, 0, 0.05);
-            color: #333;
-        }
-
-        body.light-theme .masjid-title,
-        body.light-theme .prayer-times-title {
-            color: #2E7D32;
-        }
-
-        body.light-theme .prayer-time.active {
-            background: rgba(46, 125, 50, 0.7);
-            box-shadow: 0 0 25px rgba(46, 125, 50, 0.5);
-        }
-
-        body.light-theme .slideshow-container {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        body.iqamah-mode {
-            background: #1a237e;
-            transition: background-color 2s ease-in-out;
-        }
-
-        body.iqamah-mode .prayer-times-container {
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        body.light-theme.iqamah-mode {
-            background: #1565C0;
-        }
-
-        @media (max-width: 1200px) {
-            .clock { font-size: 5rem; }
-            .date { font-size: 2rem; }
-            .prayer-name { font-size: 1.8rem; }
-            .prayer-hour { font-size: 2.2rem; }
-            .slideshow-container, .slide { max-height: 250px; height: 250px; }
-        }
-
+        /* Menghapus beberapa style lama yang tidak relevan lagi */
+        .iqamah-countdown, .iqamah-notification, .theme-toggle { display: none; }
+        
+        /* Responsive Styles Sederhana */
         @media (max-width: 900px) {
-            .landscape-container { flex-direction: column; overflow-y: auto; }
-            .left-panel, .right-panel { padding: 20px; }
-            .masjid-title { font-size: 2.5rem; margin-bottom: 20px; }
-            .clock { font-size: 4rem; }
-            .slideshow-container, .slide { max-height: 200px; height: 200px; }
+            .landscape-container { flex-direction: column; overflow-y: auto; align-items: center;}
+            .right-panel { flex-basis: auto; width: 100%; max-width: 400px; }
+            .left-panel { display: none; } /* Panel kiri disembunyikan di mode mobile agar fokus ke jadwal */
         }
+
     </style>
 </head>
 <body>
-    <!-- Konten HTML tidak ada perubahan, jadi saya potong agar lebih ringkas. -->
-    <!-- Anda bisa langsung salin seluruh kode di atas. -->
     <div class="landscape-container">
+        <!-- Panel Kiri tetap ada untuk tampilan desktop/TV besar -->
         <div class="left-panel">
-            <h1 class="masjid-title">Masjid Da'watul Islam Yogyakarta</h1>
-            <div class="slideshow-container">
-                <img src="images/masjidil-haram-1.jpg" class="slide active" alt="Masjidil Haram"><div class="slide-caption">Masjidil Haram, Makkah</div>
-                <img src="images/masjidil-haram-2.jpg" class="slide" alt="Ka'bah"><div class="slide-caption">Ka'bah, Masjidil Haram</div>
-                <img src="images/masjid-nabawi-1.jpg" class="slide" alt="Masjid Nabawi"><div class="slide-caption">Masjid Nabawi, Madinah</div>
-                <img src="images/masjid-nabawi-2.jpg" class="slide" alt="Pintu Masjid Nabawi"><div class="slide-caption">Pintu Masjid Nabawi</div>
-            </div>
+            <h1 class="masjid-title">Masjid Da'watul Islam</h1>
             <div class="clock-container">
                 <div class="clock"><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></div>
                 <div class="date"><span id="day">Senin</span>, <span id="month">Januari</span> <span id="daynum">1</span>, <span id="year">2023</span></div>
             </div>
-            <div class="iqamah-countdown" id="iqamahCountdown">Menuju Iqamah: <span id="countdown">15:00</span></div>
-            <div class="iqamah-notification" id="iqamahNotification">Waktu Sholat Telah Tiba! Bersiap untuk Iqamah.</div>
         </div>
+
+        <!-- Panel Kanan sekarang berisi jadwal sholat dengan gaya baru -->
         <div class="right-panel">
             <div class="prayer-times-container">
                 <h2 class="prayer-times-title">Waktu Sholat</h2>
-                <div class="prayer-times" id="prayerTimes"></div>
+                <div class="prayer-times" id="prayerTimes">
+                    <!-- Waktu sholat akan diisi oleh JavaScript -->
+                </div>
             </div>
         </div>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()">Toggle Tema</button>
+
     <script>
-        // Kode JavaScript tidak ada perubahan sama sekali
-        const prayerTimes = { "Shubuh": "04:25", "Dzuhur": "11:45", "Ashar": "15:05", "Maghrib": "17:45", "Isya": "19:00" };
-        const iqamahTimes = { "Shubuh": "04:40", "Dzuhur": "12:00", "Ashar": "15:20", "Maghrib": "17:50", "Isya": "19:15" };
-        const iqamahDurationMinutes = { "Shubuh": 15, "Dzuhur": 15, "Ashar": 15, "Maghrib": 5, "Isya": 15 };
+        // --- DATA BARU SESUAI GAMBAR ---
+        const prayerTimes = {
+            "Shubuh": "04:11",
+            "Shuruq": "05:29",
+            "Jumu'ah": "11:43",
+            "Asr": "15:09",
+            "Maghrib": "17:57",
+            "Isya": "19:27"
+        };
+
+        // --- KOLEKSI IKON SVG UNTUK SETIAP WAKTU SHOLAT ---
+        const prayerIcons = {
+            "Shubuh": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 8h16v2H4zm0 4h16v2H4zm0 4h16v2H4zm17 2.99h-2.22A6.995 6.995 0 0 1 12 15a6.995 6.995 0 0 1-6.78-6H3v-2h2.22A6.995 6.995 0 0 1 12 9a6.995 6.995 0 0 1 6.78 6H21v2.99zM12 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>`,
+            "Shuruq": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0-2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zM20 11h2v2h-2zm-2.929-5.071l1.414-1.414 1.414 1.414-1.414 1.414zM4 11H2v2h2zm2.929-5.071L5.515 4.515 4.1 5.929l1.414 1.414zM11 20v2h2v-2zm5.071-2.929l1.414 1.414-1.414 1.414-1.414-1.414zM11 2v2h2V2zm-5.071 2.929L4.515 6.343 5.929 4.93l1.414 1.414z"/></svg>`,
+            "Jumu'ah": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18zm0 2a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM11 8h2v6h-2z"/></svg>`,
+            "Asr": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0-2a5 5 0 1 1 0 10 5 5 0 0 1 0-10zM2 13h20v2H2zm-1-4h3v2H1zm20 0h2v2h-2zm-2.929-5.071l1.414-1.414 1.414 1.414-1.414 1.414zM3.586 5.343L2.172 3.93l1.414-1.414 1.414 1.414z"/></svg>`,
+            "Maghrib": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 14h16v2H4zm17 2.99h-2.22A6.995 6.995 0 0 1 12 11a6.995 6.995 0 0 1-6.78-8H3V6h2.22A6.995 6.995 0 0 1 12 5a6.995 6.995 0 0 1 6.78 8H21v2.99zM12 9a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>`,
+            "Isya": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 1 6.124-15.847A9.005 9.005 0 0 0 12 3a9 9 0 0 0 0 18z"/></svg>`
+        };
+        
         let currentActivePrayer = null;
-        let countdownInterval = null;
-        function initSlideshow() {
-            const slides = document.querySelectorAll('.slide');
-            let currentSlide = 0;
-            function showNextSlide() {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
+
+        function renderPrayerTimes() {
+            const prayerTimesContainer = document.getElementById('prayerTimes');
+            prayerTimesContainer.innerHTML = '';
+            
+            for (const [prayerName, prayerTime] of Object.entries(prayerTimes)) {
+                const prayerElement = document.createElement('div');
+                prayerElement.className = 'prayer-time';
+                prayerElement.id = `prayer-${prayerName.toLowerCase()}`;
+                
+                // Memasukkan struktur HTML baru dengan ikon
+                prayerElement.innerHTML = `
+                    <div class="prayer-icon">${prayerIcons[prayerName]}</div>
+                    <div class="prayer-name">${prayerName}</div>
+                    <div class="prayer-hour">${prayerTime}</div>
+                `;
+                prayerTimesContainer.appendChild(prayerElement);
             }
-            setInterval(showNextSlide, 7000);
         }
+
+        // Fungsi-fungsi lain disederhanakan karena iqamah dan tema tidak lagi ditampilkan
         function updateClockDisplay() {
             const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('hours').textContent = now.getHours().toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = now.getSeconds().toString().padStart(2, '0');
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            document.getElementById('hours').textContent = hours;
-            document.getElementById('minutes').textContent = minutes;
-            document.getElementById('seconds').textContent = seconds;
             document.getElementById('day').textContent = days[now.getDay()];
             document.getElementById('month').textContent = months[now.getMonth()];
             document.getElementById('daynum').textContent = now.getDate();
             document.getElementById('year').textContent = now.getFullYear();
         }
-        function renderPrayerTimes() {
-            const prayerTimesContainer = document.getElementById('prayerTimes');
-            prayerTimesContainer.innerHTML = '';
-            for (const [prayerName, prayerTime] of Object.entries(prayerTimes)) {
-                const iqamahTime = iqamahTimes[prayerName] || '-';
-                const prayerElement = document.createElement('div');
-                prayerElement.className = 'prayer-time';
-                prayerElement.id = `prayer-${prayerName.toLowerCase()}`;
-                prayerElement.innerHTML = `<div class="prayer-name">${prayerName}</div><div class="prayer-hour">${prayerTime}</div><div class="iqamah-label">Iqamah: ${iqamahTime}</div>`;
-                prayerTimesContainer.appendChild(prayerElement);
-            }
-        }
-        function checkPrayerAndIqamahStatus() {
+
+        function checkActivePrayer() {
             const now = new Date();
             const currentTime24 = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
             let activePrayer = null;
             const prayers = Object.entries(prayerTimes);
+            
             for (let i = 0; i < prayers.length; i++) {
                 const [prayerName, prayerTime] = prayers[i];
                 const nextPrayerIndex = (i + 1) % prayers.length;
                 const nextPrayerTime = prayers[nextPrayerIndex][1];
+
                 if (prayerName === "Isya") {
                     if (currentTime24 >= prayerTime || currentTime24 < prayerTimes["Shubuh"]) {
                         activePrayer = "Isya";
@@ -356,72 +255,24 @@
                     }
                 }
             }
+
             if (activePrayer !== currentActivePrayer) {
                 currentActivePrayer = activePrayer;
-                updateActivePrayerDisplay(activePrayer);
-                if (countdownInterval) {
-                    clearInterval(countdownInterval);
-                    countdownInterval = null;
-                    document.getElementById('iqamahCountdown').style.display = 'none';
-                    document.getElementById('iqamahNotification').style.display = 'none';
-                    document.body.classList.remove('iqamah-mode');
-                }
+                document.querySelectorAll('.prayer-time').forEach(el => el.classList.remove('active'));
                 if (activePrayer) {
-                    const prayerTime = prayerTimes[activePrayer];
-                    const iqamahTime = iqamahTimes[activePrayer];
-                    const duration = (iqamahDurationMinutes[activePrayer] || 15) * 60 * 1000;
-                    startIqamahCountdown(prayerTime, iqamahTime, duration);
+                    const activeElement = document.getElementById(`prayer-${activePrayer.toLowerCase()}`);
+                    if (activeElement) activeElement.classList.add('active');
                 }
             }
         }
-        function updateActivePrayerDisplay(activePrayer) {
-            document.querySelectorAll('.prayer-time').forEach(el => el.classList.remove('active'));
-            if (activePrayer) {
-                const activeElement = document.getElementById(`prayer-${activePrayer.toLowerCase()}`);
-                if (activeElement) activeElement.classList.add('active');
-            }
-        }
-        function startIqamahCountdown(prayerTime, iqamahTime, duration) {
-            const now = new Date();
-            const [prayerHours, prayerMinutes] = prayerTime.split(':').map(Number);
-            const prayerDate = new Date();
-            prayerDate.setHours(prayerHours, prayerMinutes, 0, 0);
-            const timeSinceAdzan = now.getTime() - prayerDate.getTime();
-            if (timeSinceAdzan > 0 && timeSinceAdzan < duration) {
-                showIqamahCountdown(duration - timeSinceAdzan);
-            }
-        }
-        function showIqamahCountdown(timeDiff) {
-            document.body.classList.add('iqamah-mode');
-            document.getElementById('iqamahNotification').style.display = 'block';
-            document.getElementById('iqamahCountdown').style.display = 'block';
-            let remainingTime = timeDiff;
-            updateCountdownDisplay(remainingTime);
-            countdownInterval = setInterval(() => {
-                remainingTime -= 1000;
-                if (remainingTime < 0) {
-                    clearInterval(countdownInterval);
-                    document.getElementById('countdown').textContent = "IQAMAH!";
-                    return;
-                }
-                updateCountdownDisplay(remainingTime);
-            }, 1000);
-        }
-        function updateCountdownDisplay(timeDiff) {
-            const minutes = Math.floor(timeDiff / (1000 * 60));
-            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-            document.getElementById('countdown').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        function toggleTheme() {
-            document.body.classList.toggle('light-theme');
-            localStorage.setItem('lightTheme', document.body.classList.contains('light-theme'));
-        }
-        function checkSavedTheme() {
-            if (localStorage.getItem('lightTheme') === 'true') {
-                document.body.classList.add('light-theme');
-            }
-        }
+
         window.onload = function() {
-            checkSavedTheme();
             renderPrayerTimes();
-            
+            updateClockDisplay();
+            checkActivePrayer();
+            setInterval(updateClockDisplay, 1000);
+            setInterval(checkActivePrayer, 15000);
+        };
+    </script>
+</body>
+</html>
