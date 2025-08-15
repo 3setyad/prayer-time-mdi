@@ -67,6 +67,47 @@
             opacity: 0.8;
         }
 
+        /* Slideshow Styles */
+        .slideshow-container {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: none;
+            animation: fade 1.5s ease-in-out;
+        }
+
+        @keyframes fade {
+            from {opacity: 0.4}
+            to {opacity: 1}
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        /* Iqamah Styles */
         .iqamah-countdown {
             display: none;
             font-size: 3rem;
@@ -93,6 +134,7 @@
             100% { transform: scale(1); }
         }
 
+        /* Prayer Times Styles */
         .prayer-times-container {
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 20px;
@@ -143,6 +185,7 @@
             opacity: 0.8;
         }
 
+        /* Theme Toggle */
         .theme-toggle {
             position: fixed;
             bottom: 20px;
@@ -188,15 +231,16 @@
             box-shadow: 0 0 25px rgba(46, 125, 50, 0.5);
         }
 
-        /* Mode Iqamah */
-        body.iqamah-mode {
-            background: linear-gradient(135deg, #1a237e, #0d47a1);
-            animation: iqamahBackground 10s infinite alternate;
+        body.light-theme .slideshow-container {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        @keyframes iqamahBackground {
-            0% { background: linear-gradient(135deg, #1a237e, #0d47a1); }
-            100% { background: linear-gradient(135deg, #0d47a1, #1a237e); }
+        /* Mode Iqamah */
+        /* OPTIMASI CSS: Menghapus animasi linear-gradient yang berat.
+           Menggantinya dengan perubahan warna solid yang jauh lebih ringan untuk di-render. */
+        body.iqamah-mode {
+            background: #1a237e;
+            transition: background-color 2s ease-in-out;
         }
 
         body.iqamah-mode .prayer-times-container {
@@ -204,39 +248,24 @@
         }
 
         body.light-theme.iqamah-mode {
-            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            background: #1565C0;
         }
 
+        /* Responsive Styles */
         @media (max-width: 1200px) {
-            .clock {
-                font-size: 5rem;
-            }
-            .date {
-                font-size: 2rem;
-            }
-            .prayer-name {
-                font-size: 1.8rem;
-            }
-            .prayer-hour {
-                font-size: 2.2rem;
-            }
+            .clock { font-size: 5rem; }
+            .date { font-size: 2rem; }
+            .prayer-name { font-size: 1.8rem; }
+            .prayer-hour { font-size: 2.2rem; }
+            .slideshow-container, .slide { max-height: 250px; height: 250px; }
         }
 
         @media (max-width: 900px) {
-            .landscape-container {
-                flex-direction: column;
-                overflow-y: auto;
-            }
-            .left-panel, .right-panel {
-                padding: 20px;
-            }
-            .masjid-title {
-                font-size: 2.5rem;
-                margin-bottom: 20px;
-            }
-            .clock {
-                font-size: 4rem;
-            }
+            .landscape-container { flex-direction: column; overflow-y: auto; }
+            .left-panel, .right-panel { padding: 20px; }
+            .masjid-title { font-size: 2.5rem; margin-bottom: 20px; }
+            .clock { font-size: 4rem; }
+            .slideshow-container, .slide { max-height: 200px; height: 200px; }
         }
     </style>
 </head>
@@ -245,11 +274,25 @@
         <div class="left-panel">
             <h1 class="masjid-title">Masjid Da'watul Islam Yogyakarta</h1>
             
+            <!-- Slideshow Masjid Suci -->
+            <!-- OPTIMASI GAMBAR: Pastikan gambar-gambar ini sudah dioptimalkan (ukuran & kompresi) dan disimpan di folder /images -->
+            <div class="slideshow-container">
+                <img src="images/masjidil-haram-1.jpg" class="slide active" alt="Masjidil Haram">
+                <div class="slide-caption">Masjidil Haram, Makkah</div>
+                
+                <img src="images/masjidil-haram-2.jpg" class="slide" alt="Ka'bah">
+                <div class="slide-caption">Ka'bah, Masjidil Haram</div>
+                
+                <img src="images/masjid-nabawi-1.jpg" class="slide" alt="Masjid Nabawi">
+                <div class="slide-caption">Masjid Nabawi, Madinah</div>
+                
+                <img src="images/masjid-nabawi-2.jpg" class="slide" alt="Pintu Masjid Nabawi">
+                <div class="slide-caption">Pintu Masjid Nabawi</div>
+            </div>
+            
             <div class="clock-container">
                 <div class="clock">
-                    <span id="hours">00</span>:
-                    <span id="minutes">00</span>:
-                    <span id="seconds">00</span>
+                    <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
                 </div>
                 <div class="date">
                     <span id="day">Senin</span>,
@@ -264,7 +307,7 @@
             </div>
             
             <div class="iqamah-notification" id="iqamahNotification">
-                Waktu Sholat Telah Tiba! Bersiap untuk Iqamah dalam 15 menit
+                Waktu Sholat Telah Tiba! Bersiap untuk Iqamah.
             </div>
         </div>
         
@@ -281,71 +324,56 @@
     <button class="theme-toggle" onclick="toggleTheme()">Toggle Tema</button>
 
     <script>
-        // Data waktu sholat untuk Yogyakarta
         const prayerTimes = {
-            "Shubuh": "04:25",
-            "Dzuhur": "11:45",
-            "Ashar": "15:05",
-            "Maghrib": "17:45",
-            "Isya": "19:00"
+            "Shubuh": "04:25", "Dzuhur": "11:45", "Ashar": "15:05", "Maghrib": "17:45", "Isya": "19:00"
         };
-
-        // Waktu iqamah (15 menit setelah adzan kecuali Maghrib 5 menit)
         const iqamahTimes = {
-            "Shubuh": "04:40",
-            "Dzuhur": "12:00",
-            "Ashar": "15:20",
-            "Maghrib": "17:50",
-            "Isya": "19:15"
+            "Shubuh": "04:40", "Dzuhur": "12:00", "Ashar": "15:20", "Maghrib": "17:50", "Isya": "19:15"
+        };
+        const iqamahDurationMinutes = { // durasi dalam menit
+            "Shubuh": 15, "Dzuhur": 15, "Ashar": 15, "Maghrib": 5, "Isya": 15
         };
 
-        // Variabel global
         let currentActivePrayer = null;
         let countdownInterval = null;
 
-        function updateClock() {
-            const now = new Date();
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
             
-            // Waktu dalam format 24 jam
+            function showNextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+            
+            setInterval(showNextSlide, 7000); // Ganti gambar setiap 7 detik
+        }
+
+        // OPTIMASI JAVASCRIPT: Fungsi ini HANYA mengurus tampilan jam, berjalan setiap detik. Sangat ringan.
+        function updateClockDisplay() {
+            const now = new Date();
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const seconds = now.getSeconds().toString().padStart(2, '0');
-            const currentTime24 = `${hours}:${minutes}`;
-            const currentDateTime = now.getTime();
             
-            // Tanggal
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             
-            const day = days[now.getDay()];
-            const month = months[now.getMonth()];
-            const daynum = now.getDate();
-            const year = now.getFullYear();
-            
-            // Update elemen HTML
             document.getElementById('hours').textContent = hours;
             document.getElementById('minutes').textContent = minutes;
             document.getElementById('seconds').textContent = seconds;
-            
-            document.getElementById('day').textContent = day;
-            document.getElementById('month').textContent = month;
-            document.getElementById('daynum').textContent = daynum;
-            document.getElementById('year').textContent = year;
-            
-            // Update status waktu sholat aktif dan cek iqamah
-            checkPrayerTime(currentTime24, currentDateTime);
-            
-            // Update setiap detik
-            setTimeout(updateClock, 1000);
+            document.getElementById('day').textContent = days[now.getDay()];
+            document.getElementById('month').textContent = months[now.getMonth()];
+            document.getElementById('daynum').textContent = now.getDate();
+            document.getElementById('year').textContent = now.getFullYear();
         }
 
         function renderPrayerTimes() {
             const prayerTimesContainer = document.getElementById('prayerTimes');
             prayerTimesContainer.innerHTML = '';
-            
             for (const [prayerName, prayerTime] of Object.entries(prayerTimes)) {
                 const iqamahTime = iqamahTimes[prayerName] || '-';
-                
                 const prayerElement = document.createElement('div');
                 prayerElement.className = 'prayer-time';
                 prayerElement.id = `prayer-${prayerName.toLowerCase()}`;
@@ -358,152 +386,125 @@
             }
         }
 
-        function checkPrayerTime(currentTime24, currentDateTime) {
-            // Cek apakah sekarang masuk waktu sholat
+        // OPTIMASI JAVASCRIPT: Fungsi ini melakukan pengecekan logika waktu sholat.
+        // Berjalan hanya setiap 15 detik untuk menghemat CPU.
+        function checkPrayerAndIqamahStatus() {
+            const now = new Date();
+            const currentTime24 = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
             let activePrayer = null;
             const prayers = Object.entries(prayerTimes);
             
             for (let i = 0; i < prayers.length; i++) {
                 const [prayerName, prayerTime] = prayers[i];
-                const nextPrayerTime = i < prayers.length - 1 ? prayers[i+1][1] : prayerTimes["Shubuh"];
-                
-                if (currentTime24 >= prayerTime && currentTime24 < nextPrayerTime) {
-                    activePrayer = prayerName;
-                    break;
-                }
-            }
-            
-            // Jika tidak ada waktu sholat yang aktif (antara Isya dan Shubuh)
-            if (!activePrayer && (currentTime24 >= prayerTimes["Isya"] || currentTime24 < prayerTimes["Shubuh"])) {
-                activePrayer = "Isya";
-            }
-            
-            // Jika ada perubahan waktu sholat aktif
-            if (activePrayer !== currentActivePrayer) {
-                currentActivePrayer = activePrayer;
-                updateActivePrayerDisplay(activePrayer);
-                
-                // Reset countdown jika ada
-                if (countdownInterval) {
-                    clearInterval(countdownInterval);
-                    countdownInterval = null;
-                }
-                
-                // Sembunyikan notifikasi iqamah
-                document.getElementById('iqamahCountdown').style.display = 'none';
-                document.getElementById('iqamahNotification').style.display = 'none';
-                document.body.classList.remove('iqamah-mode');
-                
-                // Jika masuk waktu sholat, mulai countdown iqamah
-                if (activePrayer) {
-                    const iqamahTime = iqamahTimes[activePrayer];
-                    if (iqamahTime) {
-                        startIqamahCountdown(activePrayer, iqamahTime, currentDateTime);
+                const nextPrayerIndex = (i + 1) % prayers.length;
+                const nextPrayerTime = prayers[nextPrayerIndex][1];
+
+                // Penanganan khusus untuk Isya -> Shubuh (lintas hari)
+                if (prayerName === "Isya") {
+                    if (currentTime24 >= prayerTime || currentTime24 < prayerTimes["Shubuh"]) {
+                        activePrayer = "Isya";
+                        break;
+                    }
+                } else {
+                    if (currentTime24 >= prayerTime && currentTime24 < nextPrayerTime) {
+                        activePrayer = prayerName;
+                        break;
                     }
                 }
             }
-            
-            // Update tampilan aktif
-            updateActivePrayerDisplay(activePrayer);
-        }
 
-        function updateActivePrayerDisplay(activePrayer) {
-            // Reset semua status aktif
-            document.querySelectorAll('.prayer-time').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            if (activePrayer) {
-                const activeElement = document.getElementById(`prayer-${activePrayer.toLowerCase()}`);
-                if (activeElement) {
-                    activeElement.classList.add('active');
+            if (activePrayer !== currentActivePrayer) {
+                currentActivePrayer = activePrayer;
+                updateActivePrayerDisplay(activePrayer);
+
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                    document.getElementById('iqamahCountdown').style.display = 'none';
+                    document.getElementById('iqamahNotification').style.display = 'none';
+                    document.body.classList.remove('iqamah-mode');
+                }
+
+                if (activePrayer) {
+                    const prayerTime = prayerTimes[activePrayer];
+                    const iqamahTime = iqamahTimes[activePrayer];
+                    const duration = (iqamahDurationMinutes[activePrayer] || 15) * 60 * 1000;
+                    startIqamahCountdown(prayerTime, iqamahTime, duration);
                 }
             }
         }
 
-        function startIqamahCountdown(prayerName, iqamahTime, currentDateTime) {
-            // Parse waktu iqamah
-            const [iqamahHours, iqamahMinutes] = iqamahTime.split(':').map(Number);
-            const iqamahDate = new Date();
-            iqamahDate.setHours(iqamahHours, iqamahMinutes, 0, 0);
-            
-            // Jika iqamah sudah lewat hari ini, set untuk besok
-            if (iqamahDate.getTime() < currentDateTime) {
-                iqamahDate.setDate(iqamahDate.getDate() + 1);
+        function updateActivePrayerDisplay(activePrayer) {
+            document.querySelectorAll('.prayer-time').forEach(el => el.classList.remove('active'));
+            if (activePrayer) {
+                const activeElement = document.getElementById(`prayer-${activePrayer.toLowerCase()}`);
+                if (activeElement) activeElement.classList.add('active');
             }
-            
-            const iqamahDateTime = iqamahDate.getTime();
-            
-            // Hitung selisih waktu
-            const timeDiff = iqamahDateTime - currentDateTime;
-            
-            // Jika waktu sholat sudah masuk tapi belum iqamah
-            if (timeDiff > 0 && timeDiff <= 15 * 60 * 1000) {
-                showIqamahCountdown(timeDiff);
+        }
+
+        function startIqamahCountdown(prayerTime, iqamahTime, duration) {
+            const now = new Date();
+            const [prayerHours, prayerMinutes] = prayerTime.split(':').map(Number);
+            const prayerDate = new Date();
+            prayerDate.setHours(prayerHours, prayerMinutes, 0, 0);
+
+            const timeSinceAdzan = now.getTime() - prayerDate.getTime();
+
+            if (timeSinceAdzan > 0 && timeSinceAdzan < duration) {
+                showIqamahCountdown(duration - timeSinceAdzan);
             }
         }
 
         function showIqamahCountdown(timeDiff) {
             document.body.classList.add('iqamah-mode');
             document.getElementById('iqamahNotification').style.display = 'block';
+            document.getElementById('iqamahCountdown').style.display = 'block';
             
-            // Tampilkan countdown
-            const countdownElement = document.getElementById('iqamahCountdown');
-            countdownElement.style.display = 'block';
-            
-            // Update countdown setiap detik
-            updateCountdownDisplay(timeDiff);
+            let remainingTime = timeDiff;
+            updateCountdownDisplay(remainingTime);
             
             countdownInterval = setInterval(() => {
-                timeDiff -= 1000;
-                if (timeDiff <= 0) {
+                remainingTime -= 1000;
+                if (remainingTime < 0) {
                     clearInterval(countdownInterval);
-                    countdownElement.textContent = "IQAMAH TELAH TIBA!";
+                    document.getElementById('countdown').textContent = "IQAMAH!";
                     return;
                 }
-                updateCountdownDisplay(timeDiff);
+                updateCountdownDisplay(remainingTime);
             }, 1000);
         }
 
         function updateCountdownDisplay(timeDiff) {
-            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const minutes = Math.floor(timeDiff / (1000 * 60));
             const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-            
             document.getElementById('countdown').textContent = 
-                `${Math.floor(minutes).toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function toggleTheme() {
             document.body.classList.toggle('light-theme');
-            
-            // Simpan preferensi tema di localStorage
-            const isLight = document.body.classList.contains('light-theme');
-            localStorage.setItem('lightTheme', isLight);
+            localStorage.setItem('lightTheme', document.body.classList.contains('light-theme'));
         }
 
         function checkSavedTheme() {
-            const savedTheme = localStorage.getItem('lightTheme');
-            if (savedTheme === 'true') {
+            if (localStorage.getItem('lightTheme') === 'true') {
                 document.body.classList.add('light-theme');
             }
         }
 
-        // Inisialisasi saat halaman dimuat
         window.onload = function() {
             checkSavedTheme();
             renderPrayerTimes();
-            updateClock();
+            initSlideshow();
             
-            // Force landscape orientation
-            function adjustLayout() {
-                const isLandscape = window.innerWidth > window.innerHeight;
-                if (!isLandscape) {
-                    alert("Silahkan putar perangkat ke mode landscape untuk tampilan terbaik");
-                }
-            }
+            // Inisialisasi tampilan pertama kali
+            updateClockDisplay();
+            checkPrayerAndIqamahStatus();
             
-            window.addEventListener('resize', adjustLayout);
-            adjustLayout();
+            // Mulai loop timer
+            setInterval(updateClockDisplay, 1000); // Update jam setiap detik
+            setInterval(checkPrayerAndIqamahStatus, 15000); // Cek status sholat setiap 15 detik
         };
     </script>
 </body>
