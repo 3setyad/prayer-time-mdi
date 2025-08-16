@@ -65,7 +65,7 @@
         }
 
         .date-hijri {
-            font-size: 1.8rem;
+            font-size: 2.5rem;
             opacity: 0.8;
             margin-bottom: 10px;
             font-weight: 500;
@@ -196,7 +196,7 @@
             <div class="clock-container">
                 <div class="clock"><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></div>
                 <div class="date-hijri" id="hijri-date"></div>
-                <div class="date"><span id="day">Senin</span>, <span id="month">Januari</span> <span id="daynum">1</span>, <span id="year">2023</span></div>
+                <div class="date"><span id="day">Senin</span>, <span id="daynum">1</span> <span id="month">Januari</span> <span id="year">2023</span></div>
             </div>
             
             <!-- ELEMEN BARU UNTUK COUNTDOWN TIMER -->
@@ -314,7 +314,7 @@
             document.getElementById('month').textContent = months[now.getMonth()];
             document.getElementById('daynum').textContent = now.getDate();
             document.getElementById('year').textContent = now.getFullYear();
-            document.getElementById('hijri-date').textContent = hijriFormatter.format(now) + ' H';
+            document.getElementById('hijri-date').textContent = hijriFormatter.format(now);
         }
 
         function checkActivePrayer() {
@@ -349,3 +349,4 @@
     </script>
 </body>
 </html>
+
