@@ -25,6 +25,8 @@
             height: 100vh;
             width: 100vw;
             padding: 20px;
+            /* Beri ruang di bawah untuk running text */
+            padding-bottom: 70px; 
             gap: 20px;
         }
 
@@ -63,7 +65,6 @@
             margin-bottom: 15px;
         }
 
-        /* --- GAYA BARU UNTUK TANGGAL HIJRIAH --- */
         .date-hijri {
             font-size: 1.8rem;
             opacity: 0.8;
@@ -75,8 +76,6 @@
             font-size: 2.5rem;
             opacity: 0.8;
         }
-
-        /* --- STYLING BARU UNTUK WAKTU SHOLAT --- */
 
         .prayer-times-container {
             background-color: transparent;
@@ -147,6 +146,40 @@
 
         .iqamah-countdown, .iqamah-notification, .theme-toggle { display: none; }
         
+        /* --- GAYA BARU UNTUK RUNNING TEXT --- */
+        .running-text-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(10, 10, 25, 0.85);
+            color: #f0f0f0;
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .running-text-content {
+            display: inline-block;
+            padding-left: 100%;
+            font-size: 1.3rem;
+            animation: marquee 45s linear infinite;
+        }
+
+        /* Jeda animasi saat mouse berada di atasnya */
+        .running-text-bar:hover .running-text-content {
+            animation-play-state: paused;
+        }
+
+        /* Definisi animasi keyframes */
+        @keyframes marquee {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        /* --- AKHIR GAYA RUNNING TEXT --- */
+
         @media (max-width: 900px) {
             .landscape-container { flex-direction: column; overflow-y: auto; align-items: center;}
             .right-panel { flex-basis: auto; width: 100%; max-width: 400px; }
@@ -161,10 +194,7 @@
             <h1 class="masjid-title">Masjid Da'watul Islam</h1>
             <div class="clock-container">
                 <div class="clock"><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></div>
-                
-                <!-- ELEMEN BARU UNTUK TANGGAL HIJRIAH -->
                 <div class="date-hijri" id="hijri-date"></div>
-                
                 <div class="date"><span id="day">Senin</span>, <span id="month">Januari</span> <span id="daynum">1</span>, <span id="year">2023</span></div>
             </div>
         </div>
@@ -179,16 +209,19 @@
         </div>
     </div>
 
+    <!-- ELEMEN BARU UNTUK RUNNING TEXT -->
+    <div class="running-text-bar">
+        <p class="running-text-content">
+            Selamat Datang di Masjid Da'watul Islam Yogyakarta &nbsp;&nbsp; • &nbsp;&nbsp; Kajian Rutin Sabtu Ba'da Maghrib: Tafsir Al-Qur'an oleh Ustadz Fulan &nbsp;&nbsp; • &nbsp;&nbsp; Pengajian Ibu-Ibu Setiap Ahad Pagi Pukul 08:00 &nbsp;&nbsp; • &nbsp;&nbsp; Mari tingkatkan infaq dan shodaqoh untuk pembangunan dan operasional masjid.
+        </p>
+    </div>
+    <!-- AKHIR ELEMEN RUNNING TEXT -->
+
+
     <script>
-        // --- DATA BARU SESUAI JADWAL KEMENAG YOGYAKARTA ---
-        // Sumber: Kementerian Agama RI. Jadwal dapat bervariasi beberapa menit tergantung tanggal.
+        // Data Jadwal Sholat (Kemenag Yogyakarta)
         const prayerTimes = {
-            "Shubuh": "04:31",
-            "Shuruq": "05:44",
-            "Dzuhur": "11:47",
-            "Ashar": "15:07",
-            "Maghrib": "17:42",
-            "Isya": "18:52"
+            "Shubuh": "04:31", "Shuruq": "05:44", "Dzuhur": "11:47", "Ashar": "15:07", "Maghrib": "17:42", "Isya": "18:52"
         };
 
         const prayerIcons = {
@@ -202,25 +235,17 @@
         
         let currentActivePrayer = null;
 
-        // --- KODE BARU: FORMATTER TANGGAL HIJRIAH ---
-        // Membuat formatter tanggal yang akan mengubah tanggal Masehi ke Hijriah
-        // dengan format bahasa Indonesia (id-ID) dan kalender Islam (islamic).
         const hijriFormatter = new Intl.DateTimeFormat('id-ID', {
-            calendar: 'islamic',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
+            calendar: 'islamic', day: 'numeric', month: 'long', year: 'numeric'
         });
 
         function renderPrayerTimes() {
             const prayerTimesContainer = document.getElementById('prayerTimes');
             prayerTimesContainer.innerHTML = '';
-            
             for (const [prayerName, prayerTime] of Object.entries(prayerTimes)) {
                 const prayerElement = document.createElement('div');
                 prayerElement.className = 'prayer-time';
                 prayerElement.id = `prayer-${prayerName.toLowerCase()}`;
-                
                 prayerElement.innerHTML = `
                     <div class="prayer-icon">${prayerIcons[prayerName]}</div>
                     <div class="prayer-name">${prayerName}</div>
@@ -232,51 +257,37 @@
 
         function updateClockDisplay() {
             const now = new Date();
-
-            // Update Jam Digital
             document.getElementById('hours').textContent = now.getHours().toString().padStart(2, '0');
             document.getElementById('minutes').textContent = now.getMinutes().toString().padStart(2, '0');
             document.getElementById('seconds').textContent = now.getSeconds().toString().padStart(2, '0');
-            
-            // Update Tanggal Masehi
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             document.getElementById('day').textContent = days[now.getDay()];
             document.getElementById('month').textContent = months[now.getMonth()];
             document.getElementById('daynum').textContent = now.getDate();
             document.getElementById('year').textContent = now.getFullYear();
-
-            // --- KODE BARU: UPDATE TANGGAL HIJRIAH ---
-            // Menggunakan formatter untuk mendapatkan tanggal Hijriah saat ini
-            const hijriDateString = hijriFormatter.format(now);
-            document.getElementById('hijri-date').textContent = hijriDateString + ' H';
+            document.getElementById('hijri-date').textContent = hijriFormatter.format(now) + ' H';
         }
 
         function checkActivePrayer() {
             const now = new Date();
             const currentTime24 = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-            
             let activePrayer = null;
             const prayers = Object.entries(prayerTimes);
-            
             for (let i = 0; i < prayers.length; i++) {
                 const [prayerName, prayerTime] = prayers[i];
                 const nextPrayerIndex = (i + 1) % prayers.length;
                 const nextPrayerTime = prayers[nextPrayerIndex][1];
-
                 if (prayerName === "Isya") {
                     if (currentTime24 >= prayerTime || currentTime24 < prayerTimes["Shubuh"]) {
-                        activePrayer = "Isya";
-                        break;
+                        activePrayer = "Isya"; break;
                     }
                 } else {
                     if (currentTime24 >= prayerTime && currentTime24 < nextPrayerTime) {
-                        activePrayer = prayerName;
-                        break;
+                        activePrayer = prayerName; break;
                     }
                 }
             }
-
             if (activePrayer !== currentActivePrayer) {
                 currentActivePrayer = activePrayer;
                 document.querySelectorAll('.prayer-time').forEach(el => el.classList.remove('active'));
