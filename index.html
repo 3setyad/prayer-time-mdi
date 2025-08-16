@@ -63,6 +63,14 @@
             margin-bottom: 15px;
         }
 
+        /* --- GAYA BARU UNTUK TANGGAL HIJRIAH --- */
+        .date-hijri {
+            font-size: 1.8rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
         .date {
             font-size: 2.5rem;
             opacity: 0.8;
@@ -153,6 +161,10 @@
             <h1 class="masjid-title">Masjid Da'watul Islam</h1>
             <div class="clock-container">
                 <div class="clock"><span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span></div>
+                
+                <!-- ELEMEN BARU UNTUK TANGGAL HIJRIAH -->
+                <div class="date-hijri" id="hijri-date"></div>
+                
                 <div class="date"><span id="day">Senin</span>, <span id="month">Januari</span> <span id="daynum">1</span>, <span id="year">2023</span></div>
             </div>
         </div>
@@ -190,6 +202,16 @@
         
         let currentActivePrayer = null;
 
+        // --- KODE BARU: FORMATTER TANGGAL HIJRIAH ---
+        // Membuat formatter tanggal yang akan mengubah tanggal Masehi ke Hijriah
+        // dengan format bahasa Indonesia (id-ID) dan kalender Islam (islamic).
+        const hijriFormatter = new Intl.DateTimeFormat('id-ID', {
+            calendar: 'islamic',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+
         function renderPrayerTimes() {
             const prayerTimesContainer = document.getElementById('prayerTimes');
             prayerTimesContainer.innerHTML = '';
@@ -210,15 +232,24 @@
 
         function updateClockDisplay() {
             const now = new Date();
+
+            // Update Jam Digital
             document.getElementById('hours').textContent = now.getHours().toString().padStart(2, '0');
             document.getElementById('minutes').textContent = now.getMinutes().toString().padStart(2, '0');
             document.getElementById('seconds').textContent = now.getSeconds().toString().padStart(2, '0');
+            
+            // Update Tanggal Masehi
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             document.getElementById('day').textContent = days[now.getDay()];
             document.getElementById('month').textContent = months[now.getMonth()];
             document.getElementById('daynum').textContent = now.getDate();
             document.getElementById('year').textContent = now.getFullYear();
+
+            // --- KODE BARU: UPDATE TANGGAL HIJRIAH ---
+            // Menggunakan formatter untuk mendapatkan tanggal Hijriah saat ini
+            const hijriDateString = hijriFormatter.format(now);
+            document.getElementById('hijri-date').textContent = hijriDateString + ' H';
         }
 
         function checkActivePrayer() {
