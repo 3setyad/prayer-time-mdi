@@ -312,4 +312,14 @@
 
         async function initialize() {
             await fetchPrayerTimes();
-  
+            renderPrayerTimes();
+            updateClockDisplay();
+            checkActivePrayer();
+            setInterval(updateClockDisplay, 1000);
+            setInterval(checkActivePrayer, 10000);
+        }
+
+        window.onload = initialize;
+    </script>
+</body>
+</html>
