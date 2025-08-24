@@ -107,7 +107,7 @@
         }
 
         .countdown-timer {
-            font-size: 3.5rem;
+            font-size: 6rem;
             font-weight: 700; /* Menggunakan ketebalan Bold */
         }
 
@@ -163,8 +163,8 @@
                 <div class="date"><span id="day">Senin</span>, <span id="daynum">1</span> <span id="month">Januari</span> <span id="year">2023</span></div>
             </div>
             <div class="iqamah-countdown" id="iqamahCountdownContainer">
-                <h3 id="countdownTitle">Menuju Iqamah</h3>
                 <div class="countdown-timer">
+                    <span id="countdownTitle">IQOMAH ~ </span>
                     <span id="countdownMinutes">15</span>:<span id="countdownSeconds">00</span>
                 </div>
             </div>
@@ -178,7 +178,7 @@
     </div>
     <div class="running-text-bar">
         <p class="running-text-content">
-            Selamat Datang di Masjid Da'watul Islam Yogyakarta &nbsp;&nbsp; • &nbsp;&nbsp; Kajian Rutin Sabtu Ba'da Maghrib: Tafsir Al-Qur'an oleh Ustadz Fulan &nbsp;&nbsp; • &nbsp;&nbsp; Pengajian Ibu-Ibu Setiap Ahad Pagi Pukul 08:00 &nbsp;&nbsp; • &nbsp;&nbsp; Mari tingkatkan infaq dan shodaqoh untuk pembangunan dan operasional masjid.
+            Selamat Datang di Masjid Da'watul Islam Yogyakarta &nbsp;&nbsp; • &nbsp;&nbsp; Pengajian Rutin Ibu-ibu Setiap Senin Ba'da Ashar &nbsp;&nbsp; • &nbsp;&nbsp; Tadarus Bersama Rutin Setiap Malam Jum'at Ba'da Isya' &nbsp;&nbsp; • &nbsp;&nbsp; Pengajian Bapak-bapak Setiap Malam Jum'at Legi dan Malam Minggu Legi Ba'da Isya' &nbsp;&nbsp; • &nbsp;&nbsp; Mari tingkatkan infaq dan shodaqoh untuk pembangunan dan operasional masjid.
         </p>
     </div>
 
@@ -249,7 +249,7 @@
                 console.log("Menggunakan jadwal sholat statis sebagai cadangan.");
             }
         }
-        function startIqamahCountdown(prayerName, durationMinutes) { if (iqamahInterval) clearInterval(iqamahInterval); countdownTitleEl.textContent = `Menuju Iqamah ${prayerName}`; countdownContainer.classList.add('visible'); let endTime = new Date().getTime() + durationMinutes * 60 * 1000; iqamahInterval = setInterval(() => { const now = new Date().getTime(); const distance = endTime - now; if (distance < 0) { stopIqamahCountdown(); return; } const minutes = Math.floor(distance / (1000 * 60)); const seconds = Math.floor((distance % (1000 * 60)) / 1000); countdownMinutesEl.textContent = minutes.toString().padStart(2, '0'); countdownSecondsEl.textContent = seconds.toString().padStart(2, '0'); }, 1000); }
+        function startIqamahCountdown(prayerName, durationMinutes) { if (iqamahInterval) clearInterval(iqamahInterval); countdownTitleEl.textContent = `IQOMAH ~ `; countdownContainer.classList.add('visible'); let endTime = new Date().getTime() + durationMinutes * 60 * 1000; iqamahInterval = setInterval(() => { const now = new Date().getTime(); const distance = endTime - now; if (distance < 0) { stopIqamahCountdown(); return; } const minutes = Math.floor(distance / (1000 * 60)); const seconds = Math.floor((distance % (1000 * 60)) / 1000); countdownMinutesEl.textContent = minutes.toString().padStart(2, '0'); countdownSecondsEl.textContent = seconds.toString().padStart(2, '0'); }, 1000); }
         function stopIqamahCountdown() { if (iqamahInterval) clearInterval(iqamahInterval); iqamahInterval = null; countdownContainer.classList.remove('visible'); }
         function renderPrayerTimes() { const prayerTimesContainer = document.getElementById('prayerTimes'); prayerTimesContainer.innerHTML = ''; for (const [prayerName, prayerTime] of Object.entries(prayerTimes)) { const prayerElement = document.createElement('div'); prayerElement.className = 'prayer-time'; prayerElement.id = `prayer-${prayerName.toLowerCase()}`; prayerElement.innerHTML = `<div class="prayer-icon">${prayerIcons[prayerName]}</div><div class="prayer-name">${prayerName}</div><div class="prayer-hour">${prayerTime}</div>`; prayerTimesContainer.appendChild(prayerElement); } }
         function updateClockDisplay() { const now = new Date(); document.getElementById('hours').textContent = now.getHours().toString().padStart(2, '0'); document.getElementById('minutes').textContent = now.getMinutes().toString().padStart(2, '0'); document.getElementById('seconds').textContent = now.getSeconds().toString().padStart(2, '0'); const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']; const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']; document.getElementById('day').textContent = days[now.getDay()]; document.getElementById('month').textContent = months[now.getMonth()]; document.getElementById('daynum').textContent = now.getDate(); document.getElementById('year').textContent = now.getFullYear(); }
